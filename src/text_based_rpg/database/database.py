@@ -7,7 +7,7 @@ from .models import Base
 DATABASE_PATH = Path(__file__).parent / "game_data.db"
 DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=False)
 Session = sessionmaker(bind=engine)
 
 def create_tables():

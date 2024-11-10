@@ -5,17 +5,11 @@ def roll_dice(sides=20):
     """Simulate rolling a dice with a specified number of sides."""
     return random.randint(1, sides)
 
-def engage_combat(player):
-    enemy_name = input("Enter the name of the enemy you wish to fight: ")
-    enemy = Enemy.load(enemy_name)
-    
-    if not enemy:
-        print("Enemy not found.")
-        return
-
+def engage_combat(player, enemy):
+    """Engages the player in combat with a specified enemy."""
     print(f"You engage in combat with {enemy.name}!")
 
-    while player.health > 0 and enemy.health > 0: 
+    while player.health > 0 and enemy.health > 0:
         action = input("Choose your action: (1) Attack (2) Defend: ")
         
         if action == "1":
@@ -41,7 +35,7 @@ def engage_combat(player):
             print("You brace yourself to defend, reducing incoming damage.")
 
         enemy_attack_roll = roll_dice()
-        if enemy_attack_roll > 3: 
+        if enemy_attack_roll > 3:  
             damage = enemy.strength + roll_dice(4)
             if action == "2":
                 damage = max(0, damage - 3)  

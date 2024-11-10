@@ -1,8 +1,9 @@
-from ..database.database import Session
+from ..database import Session
 from ..database.models import Player as PlayerModel
 
 class Player:
-    def __init__(self, name, health=100, strength=10, experience=0):
+    def __init__(self, name, health=100, strength=10, experience=0, id=None):
+        self.id = id  # Add id as an instance attribute
         self.name = name
         self.health = health
         self.strength = strength
@@ -24,6 +25,8 @@ class Player:
                     experience=self.experience
                 )
                 session.add(player)
+                session.flush()  # This assigns an id to the new player object.
+                self.id = player.id  # Set the id from the database record
             session.commit()
 
     @classmethod
@@ -33,6 +36,7 @@ class Player:
             player = session.query(PlayerModel).filter_by(name=name).first()
             if player:
                 return cls(
+                    id=player.id,  # Pass the id to the Player instance
                     name=player.name,
                     health=player.health,
                     strength=player.strength,
