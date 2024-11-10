@@ -1,19 +1,25 @@
 from text_based_rpg.player import Player
+from text_based_rpg.inventory import Inventory
 from text_based_rpg.database import create_tables
 
+# Initialize the database tables
 create_tables()
 print("Database and tables initialized successfully.")
 
-player = Player(name="Hero", health=120, strength=20, experience=15)
+# Create a player and save to the database
+player = Player(name="Hero")
 player.save()
 print(f"Player {player.name} saved to the database.")
 
-loaded_player = Player.load("Hero")
-if loaded_player:
-    print(f"Loaded player: {loaded_player.name}, Health: {loaded_player.health}, Strength: {loaded_player.strength}, Experience: {loaded_player.experience}")
+# Add items to the player's inventory
+inventory_item = Inventory(player_id=1, item_name="Health Potion", quantity=3)
+inventory_item.save()
+print(f"Added {inventory_item.quantity} {inventory_item.item_name}(s) to inventory.")
 
-loaded_player.experience += 10
-loaded_player.save()
-print(f"Updated player experience: {loaded_player.experience}")
+# Load an item from the inventory
+loaded_item = Inventory.load(player_id=1, item_name="Health Potion")
+if loaded_item:
+    print(f"Loaded item: {loaded_item.item_name}, Quantity: {loaded_item.quantity}")
 
-loaded_player.delete()
+# Delete an item from the inventory
+loaded_item.delete()
