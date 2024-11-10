@@ -1,5 +1,4 @@
-from sqlalchemy.orm import Session
-from .database import connect
+from .database import Session
 from .models import Player as PlayerModel
 
 class Player:
@@ -11,7 +10,7 @@ class Player:
 
     def save(self):
         """Save or update the player in the database."""
-        with Session(connect()) as session:
+        with Session() as session:
             player = session.query(PlayerModel).filter_by(name=self.name).first()
             if player:
                 player.health = self.health
@@ -30,7 +29,7 @@ class Player:
     @classmethod
     def load(cls, name):
         """Load a player by name from the database and return a Player instance."""
-        with Session(connect()) as session:
+        with Session() as session:
             player = session.query(PlayerModel).filter_by(name=name).first()
             if player:
                 return cls(
@@ -45,7 +44,7 @@ class Player:
 
     def delete(self):
         """Delete the player from the database."""
-        with Session(connect()) as session:
+        with Session() as session:
             player = session.query(PlayerModel).filter_by(name=self.name).first()
             if player:
                 session.delete(player)
