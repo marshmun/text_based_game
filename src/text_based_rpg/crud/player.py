@@ -1,5 +1,5 @@
-from .database import Session
-from .models import Player as PlayerModel
+from ..database.database import Session
+from ..database.models import Player as PlayerModel
 
 class Player:
     def __init__(self, name, health=100, strength=10, experience=0):

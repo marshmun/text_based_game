@@ -1,5 +1,5 @@
-from .database import Session
-from .models import Enemies as EnemyModel
+from ..database.database import Session
+from ..database.models import Enemies as EnemyModel
 
 class Enemy:
     def __init__(self, name, health=50, strength=5):

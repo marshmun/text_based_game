@@ -1,6 +1,6 @@
-from text_based_rpg.player import Player
-from text_based_rpg.inventory import Inventory
-from text_based_rpg.database import create_tables
+from text_based_rpg.crud.player import Player
+from text_based_rpg.crud.inventory import Inventory
+from text_based_rpg.database.database import create_tables
 
 # Initialize the database tables
 create_tables()

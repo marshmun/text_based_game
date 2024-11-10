@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
+from sqlalchemy.orm import relationship
+
 
 Base = declarative_base()
 
@@ -12,12 +14,17 @@ class Player(Base):
     strength = Column(Integer, default=10)
     experience = Column(Integer, default=0)
 
+    inventory_items = relationship("Inventory", back_populates="player")
+
+
 class Inventory(Base):
     __tablename__ = 'Inventory'
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer, ForeignKey('Player.id'))
     item_name = Column(String, nullable=False)
     quantity = Column(Integer, default=1)
+
+    player = relationship("Player", back_populates="inventory_items")
 
 class Enemies(Base):
     __tablename__ = 'Enemies'

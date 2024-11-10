@@ -1,5 +1,5 @@
-from .database import Session
-from .models import Inventory as InventoryModel, Player as PlayerModel
+from ..database.database import Session
+from ..database.models import Inventory as InventoryModel, Player as PlayerModel
 
 class Inventory:
     def __init__(self, player_id, item_name, quantity=1):
