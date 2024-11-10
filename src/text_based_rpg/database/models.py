@@ -13,6 +13,7 @@ class Player(Base):
     health = Column(Integer, default=100)
     strength = Column(Integer, default=10)
     experience = Column(Integer, default=0)
+    player_class = Column(String, nullable=True)
 
     inventory_items = relationship("Inventory", back_populates="player")
 

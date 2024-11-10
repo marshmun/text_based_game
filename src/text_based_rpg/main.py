@@ -3,22 +3,48 @@ from text_based_rpg.database import create_tables
 from text_based_rpg.game_logic.combat import engage_combat
 from text_based_rpg.game_logic.exploration import explore_room
 from text_based_rpg.game_logic.inventory_logic import manage_inventory
+from text_based_rpg.class_data import class_data
+
+
+def create_character(name):
+    """Creates a new character with a selected class."""
+    print("\nChoose your class:")
+    for idx, class_name in enumerate(class_data.keys(), start=1):
+        print(f"{idx}. {class_name} - {class_data[class_name]['description']}")
+    
+    class_choice = int(input("Enter the number of your chosen class: "))
+    selected_class = list(class_data.keys())[class_choice - 1]
+
+    attributes = class_data[selected_class]
+    print(f"\nYou have chosen the {selected_class} class.")
+
+    player = Player(
+        name=name,
+        health=attributes["health"],
+        strength=attributes["strength"],
+        agility=attributes["agility"],
+        experience=0,  
+        level=1,      
+        player_class=selected_class
+    )
+    return player
 
 
 def main():
-    # Initialize the database and tables
     create_tables()
 
-    # Create or load a player
-    player_name = input("Enter your character's name: ")
+    print("Welcome to the game!")
+    player_name = input("Enter your character's name to log in (or create a new character): ")
     player = Player.load(player_name)
-    if not player:
+    
+    if player:
+        print(f"Welcome back, {player.name}!")
+    else:
         print("Creating a new character...")
-        player = Player(name=player_name)
+        player = create_character(player_name)
         player.save()
         print(f"Welcome, {player.name}!")
 
-    # Main game loop
     while True:
         print("\n--- Main Menu ---")
         print("1. Explore")

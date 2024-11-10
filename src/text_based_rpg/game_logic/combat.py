@@ -27,9 +27,10 @@ def engage_combat(player, enemy):
 
             if enemy.health <= 0:
                 print(f"You defeated {enemy.name}!")
-                player.experience += 10
-                player.save()
-                return
+                xp_gained = 50  
+                player.add_experience(xp_gained)  
+                player.save() 
+                return  
 
         elif action == "2":
             print("You brace yourself to defend, reducing incoming damage.")
