@@ -1,4 +1,9 @@
+import random
 from text_based_rpg.crud.enemy import Enemy
+
+def roll_dice(sides=20):
+    """Simulate rolling a dice with a specified number of sides."""
+    return random.randint(1, sides)
 
 def engage_combat(player):
     enemy_name = input("Enter the name of the enemy you wish to fight: ")
@@ -9,23 +14,41 @@ def engage_combat(player):
         return
 
     print(f"You engage in combat with {enemy.name}!")
-    
-    # Basic turn-based combat loop
-    while player.health > 0 and enemy.health > 0:
-        player_attack = player.strength
-        enemy.health -= player_attack
-        print(f"You hit {enemy.name} for {player_attack} damage! Enemy health is now {enemy.health}.")
 
-        if enemy.health <= 0:
-            print(f"You defeated {enemy.name}!")
-            player.experience += 10  
-            player.save()
-            return
+    while player.health > 0 and enemy.health > 0: 
+        action = input("Choose your action: (1) Attack (2) Defend: ")
         
-        # Enemy attacks back
-        enemy_attack = enemy.strength
-        player.health -= enemy_attack
-        print(f"{enemy.name} hits you for {enemy_attack} damage! Your health is now {player.health}.")
+        if action == "1":
+            attack_roll = roll_dice()
+            if attack_roll == 20:  
+                damage = (player.strength + roll_dice(6)) * 2
+                print(f"Critical hit! You hit {enemy.name} for {damage} damage!")
+                enemy.health -= damage
+            elif attack_roll > 5:  
+                damage = player.strength + roll_dice(6)
+                print(f"You hit {enemy.name} for {damage} damage.")
+                enemy.health -= damage
+            else:
+                print("Your attack missed!")
+
+            if enemy.health <= 0:
+                print(f"You defeated {enemy.name}!")
+                player.experience += 10
+                player.save()
+                return
+
+        elif action == "2":
+            print("You brace yourself to defend, reducing incoming damage.")
+
+        enemy_attack_roll = roll_dice()
+        if enemy_attack_roll > 3: 
+            damage = enemy.strength + roll_dice(4)
+            if action == "2":
+                damage = max(0, damage - 3)  
+            player.health -= damage
+            print(f"{enemy.name} hits you for {damage} damage! Your health is now {player.health}.")
+        else:
+            print(f"{enemy.name}'s attack missed!")
 
         if player.health <= 0:
             print("You have been defeated!")
