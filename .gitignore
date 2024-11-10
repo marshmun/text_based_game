@@ -1,0 +1,3 @@
+__pycache__/
+*.pyc
+src/text_based_rpg/database/game_data.db
